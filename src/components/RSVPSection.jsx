@@ -87,10 +87,10 @@ export default function RSVPSection() {
   };
 
   return (
-    <section className="relative w-full min-h-screen bg-black text-white px-4 py-20 overflow-hidden">
+    <section className="relative w-full min-h-fit bg-black text-white px-4 py-10 md:py-20">
       
       {/* Background pattern militer */}
-      <div className="absolute inset-0 z-0 opacity-20">
+      <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
         <div className="absolute inset-0" style={{
           backgroundImage: `
             repeating-linear-gradient(45deg, rgba(220,38,38,0.1) 0px, rgba(220,38,38,0.1) 2px, transparent 2px, transparent 10px)

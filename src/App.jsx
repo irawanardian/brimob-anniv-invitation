@@ -27,22 +27,33 @@ function App() {
         )}
 
         {isOpen && (
-          <motion.div
-            key="content"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.3 }}
-          >
-            <HeroSection />
-            <AnniversaryEvent />
-            <MemoryGallery />
-            <RSVPSection />
-            <ClosingSection />
-            <Footer />
-          </motion.div>
-        )}
+  <motion.div
+    key="content"
+    className="relative" // <--- TAMBAHKAN INI
+    initial={{ opacity: 0, y: 40 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 1, delay: 0.3 }}
+  >
+    <HeroSection />
+    <AnniversaryEvent />
+    <MemoryGallery />
+    <RSVPSection />
+    <ClosingSection />
+    <Footer />
+  </motion.div>
+)}
       </AnimatePresence>
-      <BackgroundMusic isPlaying={isOpen} />
+
+      {/* Tombol musik hanya muncul jika undangan sudah dibuka */}
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 1, duration: 0.5 }}
+        >
+          <BackgroundMusic isPlaying={isOpen} />
+        </motion.div>
+      )}
     </main>
   );
 }

@@ -36,7 +36,7 @@ export default function Footer() {
         {/* Left Text */}
         <div className="text-center md:text-left">
           <h3 className="text-lg font-bold tracking-wide text-red-500 hover:scale-105 transition-transform">
-            Anniversary Angkatan 2016
+            Anniversary Angkatan Dua-dua
           </h3>
           <p className="text-sm text-neutral-400 mt-2 hover:text-white transition-colors">
             Merayakan kebersamaan, mengenang perjalanan, dan menyatukan kembali cerita.

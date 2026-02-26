@@ -103,16 +103,22 @@ export default function Cover({ onOpen }) {
       </div>
 
       {/* ================= MAIN CONTENT ================= */}
-      <div className="relative z-20 flex flex-col items-center justify-between h-full w-full">
+      <div className="relative z-20 flex flex-col items-center justify-center h-full w-full gap-4 md:gap-8">
         
         {/* 1. TOP: LOGO WITH ANIMATION */}
-        <div className="flex-none h-[3vh] md:h-[5vh] flex items-center justify-center mb-16 mt-16 group cursor-pointer"
-             onMouseEnter={() => setIsHovered(true)}
-             onMouseLeave={() => setIsHovered(false)}>
-          <div className={`scale-[0.18] md:scale-[0.3] transition-all duration-700 transform ${isHovered ? 'scale-[0.22] md:scale-[0.35] rotate-6' : ''}`}>
-            <Logo3D />
-          </div>
-        </div>
+{/* h-[12vh] cukup untuk mobile agar tidak terlalu jauh jaraknya */}
+<div className="flex-none h-[12vh] md:h-[15vh] flex items-center justify-center mb-6 md:mb-10 mt-8 md:mt-12 group cursor-pointer"
+     onMouseEnter={() => setIsHovered(true)}
+     onMouseLeave={() => setIsHovered(false)}>
+  
+  {/* - scale-[0.45]: Ukuran pas untuk mobile (terlihat jelas tapi tidak menuhi layar)
+      - md:scale-[0.25]: Ukuran kembali kecil/elegan untuk desktop 
+      - lg:scale-[0.3]: Ukuran sedikit lebih besar untuk layar sangat lebar
+  */}
+  <div className={`scale-[0.45] md:scale-[0.25] lg:scale-[0.3] transition-all duration-700 transform ${isHovered ? 'scale-[0.5] md:scale-[0.3] rotate-6' : ''}`}>
+    <Logo3D />
+  </div>
+</div>
 
         {/* 2. MIDDLE: TEXT & COUNTDOWN */}
         <div className="flex flex-col items-center w-full max-w-2xl text-center mt-2 md:mt-0 space-y-4">

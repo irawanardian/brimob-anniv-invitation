@@ -188,7 +188,7 @@ export default function HeroSection() {
         {/* Main Title dengan efek glitch */}
         <div className="relative mb-6">
           <motion.h1 
-            className="text-4xl md:text-6xl font-black leading-tight relative"
+            className="text-3xl md:text-6xl font-black leading-tight relative"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}

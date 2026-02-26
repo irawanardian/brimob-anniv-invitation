@@ -49,7 +49,7 @@ export default function AnniversaryEvent() {
   ];
 
   return (
-    <section className="relative w-full min-h-screen flex items-center justify-center bg-black text-white overflow-hidden px-4 mt-12">
+    <section className="relative w-full min-h-fit flex flex-col items-center justify-start py-20 bg-black text-white overflow-hidden px-4">
 
       {/* ===== Floating shapes background dengan motif loreng ===== */}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-20">
@@ -77,7 +77,7 @@ export default function AnniversaryEvent() {
       </div>
 
       {/* Background gradient dengan aksen merah lebih kuat */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-black via-red-950/20 to-black"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-black via-red-950/20 to-black"></div>
       
       {/* Efek sorotan lampu merah */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-red-600/5 rounded-full blur-[100px]"></div>
@@ -85,6 +85,7 @@ export default function AnniversaryEvent() {
       <motion.div
         initial={{ opacity: 0, y: 60 }}
         whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 1 }}
         className="relative z-10 max-w-4xl w-full"
       >
@@ -135,7 +136,7 @@ export default function AnniversaryEvent() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10"
+          className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10 mt-24"
         >
           {[
             { icon: "📅", label: "HARI & TANGGAL", value: "Sabtu, 15 Agustus 2026" },
@@ -152,70 +153,75 @@ export default function AnniversaryEvent() {
 
         {/* Countdown dengan progress ring (tetap warna merah) */}
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="bg-black/60 backdrop-blur-md border border-red-800/50 rounded-2xl p-8 mb-10 shadow-[0_10px_40px_rgba(220,38,38,0.2)]"
+  initial={{ opacity: 0 }}
+  whileInView={{ opacity: 1 }}
+  transition={{ delay: 0.4 }}
+  // Perubahan: Padding diperkecil di mobile (p-4) dan margin bottom disesuaikan (mb-6)
+  className="bg-black/60 backdrop-blur-md border border-red-800/50 rounded-2xl p-4 md:p-8 mb-6 md:mb-10 shadow-[0_10px_40px_rgba(220,38,38,0.2)]"
+>
+  {/* Perubahan: Ukuran font judul diperkecil di mobile */}
+  <h3 className="text-center text-red-400 font-bold tracking-wider mb-4 md:mb-6 text-xs md:text-sm">
+    COUNTDOWN MENUJU H-HARI
+  </h3>
+  
+  {/* Perubahan: Gap diperkecil di mobile (gap-3) */}
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
+    {["days", "hours", "minutes", "seconds"].map((unit, idx) => {
+      const labels = ["HARI", "JAM", "MENIT", "DETIK"];
+      return (
+        <motion.div
+          key={unit}
+          onHoverStart={() => setActiveUnit(unit)}
+          onHoverEnd={() => setActiveUnit(null)}
+          whileHover={{ scale: 1.05 }}
+          className="relative flex flex-col items-center"
         >
-          <h3 className="text-center text-red-400 font-bold tracking-wider mb-6">COUNTDOWN MENUJU H-HARI</h3>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {["days", "hours", "minutes", "seconds"].map((unit, idx) => {
-              const labels = ["HARI", "JAM", "MENIT", "DETIK"];
-              return (
-                <motion.div
-                  key={unit}
-                  onHoverStart={() => setActiveUnit(unit)}
-                  onHoverEnd={() => setActiveUnit(null)}
-                  whileHover={{ scale: 1.05 }}
-                  className="relative flex flex-col items-center"
-                >
-                  {/* Progress Ring */}
-                  <div className="relative w-28 h-28 md:w-32 md:h-32">
-                    <svg className="w-full h-full -rotate-90">
-                      <circle
-                        cx="64"
-                        cy="64"
-                        r="58"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                        fill="transparent"
-                        className="text-red-900/50"
-                      />
-                      <circle
-                        cx="64"
-                        cy="64"
-                        r="58"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                        fill="transparent"
-                        strokeDasharray={2 * Math.PI * 58}
-                        strokeDashoffset={(1 - getProgress(unit)) * 2 * Math.PI * 58}
-                        className={`text-red-500 transition-all duration-500 ${activeUnit === unit ? 'filter drop-shadow-[0_0_8px_rgba(220,38,38,0.8)]' : ''}`}
-                        strokeLinecap="round"
-                      />
-                    </svg>
-                    
-                    {/* Angka di tengah */}
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <motion.span
-                        key={timeLeft[unit]}
-                        initial={{ scale: 1.5, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        className="text-3xl md:text-4xl font-black text-red-500"
-                      >
-                        {timeLeft[unit] || 0}
-                      </motion.span>
-                      <span className="text-[10px] md:text-xs text-red-400/70 font-bold tracking-wider mt-1">
-                        {labels[idx]}
-                      </span>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
+          {/* PERUBAHAN UTAMA: Ukuran Ring (w-20 di mobile, w-32 di desktop) */}
+          <div className="relative w-20 h-20 md:w-32 md:h-32">
+            <svg className="w-full h-full -rotate-90" viewBox="0 0 128 128">
+              <circle
+                cx="64"
+                cy="64"
+                r="58"
+                stroke="currentColor"
+                strokeWidth="6" // Sedikit lebih tebal biar jelas di ukuran kecil
+                fill="transparent"
+                className="text-red-900/50"
+              />
+              <circle
+                cx="64"
+                cy="64"
+                r="58"
+                stroke="currentColor"
+                strokeWidth="6"
+                fill="transparent"
+                strokeDasharray={2 * Math.PI * 58}
+                strokeDashoffset={(1 - getProgress(unit)) * 2 * Math.PI * 58}
+                className={`text-red-500 transition-all duration-500 ${activeUnit === unit ? 'filter drop-shadow-[0_0_8px_rgba(220,38,38,0.8)]' : ''}`}
+                strokeLinecap="round"
+              />
+            </svg>
+            
+            {/* Angka di tengah: Ukuran font disesuaikan (text-xl di mobile) */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <motion.span
+                key={timeLeft[unit]}
+                initial={{ scale: 1.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="text-xl md:text-4xl font-black text-red-500"
+              >
+                {timeLeft[unit] || 0}
+              </motion.span>
+              <span className="text-[8px] md:text-xs text-red-400/70 font-bold tracking-wider">
+                {labels[idx]}
+              </span>
+            </div>
           </div>
         </motion.div>
+      );
+    })}
+  </div>
+</motion.div>
 
         {/* Anggota Brigade (Preview) */}
         <motion.div

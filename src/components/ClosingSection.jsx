@@ -4,7 +4,11 @@ import { useRef, useState, useEffect } from "react";
 
 export default function ClosingSection() {
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: false, amount: 0.3 });
+  const isInView = useInView(sectionRef, { 
+  once: false, 
+  amount: 0.2, // sedikit dikurangi agar lebih sensitif
+  margin: "0px 0px -100px 0px" // memberikan offset manual untuk perhitungan scroll
+});
   const [showSalute, setShowSalute] = useState(false);
   const [typedText, setTypedText] = useState("");
   const [currentPhrase, setCurrentPhrase] = useState(0);
@@ -46,10 +50,10 @@ export default function ClosingSection() {
   ];
 
   return (
-    <section 
-      ref={sectionRef}
-      className="relative w-full min-h-screen flex flex-col items-center justify-center bg-black text-white px-4 py-20 overflow-hidden"
-    >
+<section 
+  ref={sectionRef}
+  className="relative w-full min-h-fit flex flex-col items-center justify-start bg-black text-white px-4 py-20"
+>
       
       {/* ===== Background Militer ===== */}
       <div className="absolute inset-0 z-0">
@@ -85,36 +89,24 @@ export default function ClosingSection() {
 
       {/* ===== Particles Effect (Confetti versi Brigade) ===== */}
       <div className="absolute inset-0 z-10 pointer-events-none">
-        {[...Array(40)].map((_, i) => (
-          <motion.div
-            key={i}
-            initial={{ 
-              y: -100, 
-              x: Math.random() * window.innerWidth,
-              rotate: 0
-            }}
-            animate={{ 
-              y: window.innerHeight + 100,
-              rotate: 360,
-              x: (Math.random() - 0.5) * 200
-            }}
-            transition={{
-              duration: 5 + Math.random() * 5,
-              delay: Math.random() * 3,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-            className="absolute w-1 h-4 bg-gradient-to-b from-red-600 to-red-400 rounded-sm"
-            style={{
-              left: `${Math.random() * 100}%`,
-              opacity: 0.3 + Math.random() * 0.3,
-            }}
-          />
-        ))}
-      </div>
+    {[...Array(20)].map((_, i) => (
+      <motion.div
+        key={i}
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: "100vh", opacity: [0, 0.3, 0] }} // Gunakan vh agar relatif terhadap layar
+        transition={{
+          duration: 5 + Math.random() * 5,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+        className="absolute w-1 h-4 bg-red-600/30 rounded-sm"
+        style={{ left: `${Math.random() * 100}%` }}
+      />
+    ))}
+  </div>
 
       {/* ===== Main Content ===== */}
-      <div className="relative z-20 max-w-4xl w-full">
+      <div className="relative z-20 max-w-4xl w-full flex flex-col items-center">
         
         {/* Header dengan efek fade in */}
         <motion.div
