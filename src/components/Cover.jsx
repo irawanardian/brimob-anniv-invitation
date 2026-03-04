@@ -1,10 +1,9 @@
 // src/components/Cover.jsx
-
 import { useEffect, useState } from "react";
 import Logo3D from "./Logo3D";
 
 export default function Cover({ onOpen }) {
-  const eventDate = new Date("March 31, 2026 00:00:00").getTime();
+  const eventDate = new Date("April 18, 2026 09:00:00").getTime(); // Sesuaikan jamnya dengan acara
   const [timeLeft, setTimeLeft] = useState(getTimeRemaining());
   const [isHovered, setIsHovered] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -39,6 +38,9 @@ export default function Cover({ onOpen }) {
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
+
+  // Variabel pengecek apakah waktu sudah habis (hari H tiba)
+  const isEventStarted = timeLeft.hari === 0 && timeLeft.jam === 0 && timeLeft.menit === 0 && timeLeft.detik === 0;
 
   return (
     <div className="relative h-[100dvh] w-full overflow-hidden bg-black text-white flex flex-col items-center justify-between py-4 px-6 font-sans">
@@ -106,19 +108,14 @@ export default function Cover({ onOpen }) {
       <div className="relative z-20 flex flex-col items-center justify-center h-full w-full gap-4 md:gap-8">
         
         {/* 1. TOP: LOGO WITH ANIMATION */}
-{/* h-[12vh] cukup untuk mobile agar tidak terlalu jauh jaraknya */}
-<div className="flex-none h-[12vh] md:h-[15vh] flex items-center justify-center mb-6 md:mb-10 mt-8 md:mt-12 group cursor-pointer"
-     onMouseEnter={() => setIsHovered(true)}
-     onMouseLeave={() => setIsHovered(false)}>
-  
-  {/* - scale-[0.45]: Ukuran pas untuk mobile (terlihat jelas tapi tidak menuhi layar)
-      - md:scale-[0.25]: Ukuran kembali kecil/elegan untuk desktop 
-      - lg:scale-[0.3]: Ukuran sedikit lebih besar untuk layar sangat lebar
-  */}
-  <div className={`scale-[0.45] md:scale-[0.25] lg:scale-[0.3] transition-all duration-700 transform ${isHovered ? 'scale-[0.5] md:scale-[0.3] rotate-6' : ''}`}>
-    <Logo3D />
-  </div>
-</div>
+        <div className="flex-none h-[12vh] md:h-[15vh] flex items-center justify-center mb-6 md:mb-10 mt-8 md:mt-12 group cursor-pointer"
+             onMouseEnter={() => setIsHovered(true)}
+             onMouseLeave={() => setIsHovered(false)}>
+          
+          <div className={`scale-[0.45] md:scale-[0.25] lg:scale-[0.3] transition-all duration-700 transform ${isHovered ? 'scale-[0.5] md:scale-[0.3] rotate-6' : ''}`}>
+            <Logo3D />
+          </div>
+        </div>
 
         {/* 2. MIDDLE: TEXT & COUNTDOWN */}
         <div className="flex flex-col items-center w-full max-w-2xl text-center mt-2 md:mt-0 space-y-4">
@@ -144,25 +141,43 @@ export default function Cover({ onOpen }) {
             "Tumbuh Bersama Kuat Selamanya"
           </p>
 
-          {/* COUNTDOWN with interactive cards */}
-          <div className="flex justify-center gap-2 md:gap-4 mb-6 perspective-1000">
-            {Object.entries(timeLeft).map(([label, value], index) => (
-              <div key={label} 
-                   className="flex flex-col items-center transform transition-all duration-500 hover:-translate-y-2 hover:scale-110"
-                   style={{ animationDelay: `${index * 100}ms` }}>
-                <div className="bg-black/80 backdrop-blur-md border border-red-900/40 px-3 py-2 md:px-5 md:py-3 rounded shadow-xl min-w-[55px] md:min-w-[75px] relative overflow-hidden group/card">
-                  {/* Shine effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000"></div>
-                  <span className="text-xl md:text-3xl font-bold text-white leading-none">
-                    {String(value).padStart(2, "0")}
+          {/* COUNTDOWN with interactive cards ATAU STATUS ACARA DIMULAI */}
+          {isEventStarted ? (
+            <div className="mb-6 relative group w-full max-w-[280px] md:max-w-md mx-auto">
+              <div className="absolute inset-0 bg-red-600/30 blur-xl animate-pulse"></div>
+              <div className="relative border-y-2 border-red-500 bg-black/60 backdrop-blur-md py-4 px-6 flex flex-col items-center shadow-[0_0_30px_rgba(220,38,38,0.5)]">
+                <span className="text-2xl md:text-3xl mb-2 animate-bounce">🔥</span>
+                <h3 className="text-base md:text-xl font-black text-white tracking-[0.2em] uppercase drop-shadow-[0_0_8px_rgba(255,0,0,0.8)] text-center">
+                  HARI H TELAH TIBA
+                </h3>
+                <p className="text-[9px] md:text-xs text-red-400 font-bold tracking-[0.4em] mt-1 text-center">
+                  ACARA SUDAH BERLANGSUNG
+                </p>
+                <p className="text-[9px] md:text-xs text-white font-bold tracking-[0.1em] mt-1 text-center">
+                  Acara dimulai pada <br></br> 18 April 2026 pukul 09:00 WIB
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="flex justify-center gap-2 md:gap-4 mb-6 perspective-1000">
+              {Object.entries(timeLeft).map(([label, value], index) => (
+                <div key={label} 
+                     className="flex flex-col items-center transform transition-all duration-500 hover:-translate-y-2 hover:scale-110"
+                     style={{ animationDelay: `${index * 100}ms` }}>
+                  <div className="bg-black/80 backdrop-blur-md border border-red-900/40 px-3 py-2 md:px-5 md:py-3 rounded shadow-xl min-w-[55px] md:min-w-[75px] relative overflow-hidden group/card">
+                    {/* Shine effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover/card:translate-x-[100%] transition-transform duration-1000"></div>
+                    <span className="text-xl md:text-3xl font-bold text-white leading-none">
+                      {String(value).padStart(2, "0")}
+                    </span>
+                  </div>
+                  <span className="text-[7px] md:text-[9px] uppercase mt-1.5 text-gray-500 tracking-widest font-black">
+                    {label}
                   </span>
                 </div>
-                <span className="text-[7px] md:text-[9px] uppercase mt-1.5 text-gray-500 tracking-widest font-black">
-                  {label}
-                </span>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* GUEST CARD with glass effect */}
           <div className="w-full bg-gradient-to-r from-transparent via-red-950/30 to-transparent border-y border-white/10 py-3 mb-2 backdrop-blur-sm">

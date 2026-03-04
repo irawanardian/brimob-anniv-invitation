@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 export default function AnniversaryEvent() {
-  const eventDate = new Date("2026-08-15T09:00:00");
+  const eventDate = new Date("2026-04-18T09:00:00");
   const [timeLeft, setTimeLeft] = useState({});
   const [activeUnit, setActiveUnit] = useState(null);
 
@@ -118,7 +118,7 @@ export default function AnniversaryEvent() {
           
           <div className="flex items-center justify-center gap-4 text-red-400 font-semibold mb-2">
             <div className="h-px w-12 bg-red-500/50"></div>
-            <p>SATUAN BRIGADE</p>
+            <p>SATUAN BRIGADDE</p>
             <div className="h-px w-12 bg-red-500/50"></div>
           </div>
 
@@ -139,148 +139,248 @@ export default function AnniversaryEvent() {
           className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10 mt-24"
         >
           {[
-            { icon: "📅", label: "HARI & TANGGAL", value: "Sabtu, 15 Agustus 2026" },
-            { icon: "⏰", label: "WAKTU", value: "09.00 WIB - Selesai" },
-            { icon: "📍", label: "LOKASI", value: "Markas Brigade, Jakarta" },
-          ].map((item, idx) => (
-            <div key={idx} className="bg-red-950/20 backdrop-blur-sm border border-red-800/50 rounded-lg p-4 text-center hover:border-red-600 transition-all">
-              <p className="text-2xl mb-1">{item.icon}</p>
-              <p className="text-xs text-red-400 font-bold tracking-wider mb-1">{item.label}</p>
-              <p className="font-semibold text-sm md:text-base">{item.value}</p>
-            </div>
-          ))}
+            { 
+              icon: "📅", 
+              label: "HARI & TANGGAL", 
+              value: "Sabtu, 18 April 2026" 
+            },
+            { 
+              icon: "⏰", 
+              label: "WAKTU", 
+              value: "09.00 WIB - Selesai" 
+            },
+            { 
+              icon: "📍", 
+              label: "LOKASI", 
+              value: "Aula Soemarto, Mako Brimob Kelapa Dua Depok",
+              // Masukkan link Google Maps kamu di sini
+              link: "https://maps.app.goo.gl/ewrfN23cv7LNz6vP9?g_st=aw" 
+            },
+          ].map((item, idx) => {
+            // Jika item memiliki properti link, gunakan tag <a>
+            if (item.link) {
+              return (
+                <a
+                  key={idx}
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group bg-red-950/20 backdrop-blur-sm border border-red-800/50 rounded-lg p-4 text-center hover:bg-red-900/40 hover:border-red-500 transition-all cursor-pointer flex flex-col items-center justify-center relative overflow-hidden"
+                >
+                  {/* Efek kilauan saat hover */}
+                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  
+                  <p className="text-2xl mb-1 transition-transform group-hover:scale-110 group-hover:-translate-y-1">{item.icon}</p>
+                  <p className="text-xs text-red-400 font-bold tracking-wider mb-1">{item.label}</p>
+                  <p className="font-semibold text-sm md:text-base mb-2">{item.value}</p>
+                  
+                  {/* Badge penanda bisa diklik */}
+                  <div className="mt-auto pt-2">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-red-950/60 border border-red-700/50 rounded-full text-[10px] md:text-xs text-red-200 group-hover:bg-red-600 group-hover:text-white group-hover:border-red-500 transition-all">
+                      <span>🗺️</span> Klik untuk buka Maps
+                    </span>
+                  </div>
+                </a>
+              );
+            }
+
+            // Jika tidak ada link, tetap gunakan <div> biasa
+            return (
+              <div 
+                key={idx} 
+                className="bg-red-950/20 backdrop-blur-sm border border-red-800/50 rounded-lg p-4 text-center hover:border-red-600 transition-all flex flex-col items-center justify-center"
+              >
+                <p className="text-2xl mb-1">{item.icon}</p>
+                <p className="text-xs text-red-400 font-bold tracking-wider mb-1">{item.label}</p>
+                <p className="font-semibold text-sm md:text-base">{item.value}</p>
+              </div>
+            );
+          })}
         </motion.div>
 
         {/* Countdown dengan progress ring (tetap warna merah) */}
         <motion.div
-  initial={{ opacity: 0 }}
-  whileInView={{ opacity: 1 }}
-  transition={{ delay: 0.4 }}
-  // Perubahan: Padding diperkecil di mobile (p-4) dan margin bottom disesuaikan (mb-6)
-  className="bg-black/60 backdrop-blur-md border border-red-800/50 rounded-2xl p-4 md:p-8 mb-6 md:mb-10 shadow-[0_10px_40px_rgba(220,38,38,0.2)]"
->
-  {/* Perubahan: Ukuran font judul diperkecil di mobile */}
-  <h3 className="text-center text-red-400 font-bold tracking-wider mb-4 md:mb-6 text-xs md:text-sm">
-    COUNTDOWN MENUJU H-HARI
-  </h3>
-  
-  {/* Perubahan: Gap diperkecil di mobile (gap-3) */}
-  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
-    {["days", "hours", "minutes", "seconds"].map((unit, idx) => {
-      const labels = ["HARI", "JAM", "MENIT", "DETIK"];
-      return (
-        <motion.div
-          key={unit}
-          onHoverStart={() => setActiveUnit(unit)}
-          onHoverEnd={() => setActiveUnit(null)}
-          whileHover={{ scale: 1.05 }}
-          className="relative flex flex-col items-center"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          // Perubahan: Padding diperkecil di mobile (p-4) dan margin bottom disesuaikan (mb-6)
+          className="bg-black/60 backdrop-blur-md border border-red-800/50 rounded-2xl p-4 md:p-8 mb-6 md:mb-10 shadow-[0_10px_40px_rgba(220,38,38,0.2)]"
         >
-          {/* PERUBAHAN UTAMA: Ukuran Ring (w-20 di mobile, w-32 di desktop) */}
-          <div className="relative w-20 h-20 md:w-32 md:h-32">
-            <svg className="w-full h-full -rotate-90" viewBox="0 0 128 128">
-              <circle
-                cx="64"
-                cy="64"
-                r="58"
-                stroke="currentColor"
-                strokeWidth="6" // Sedikit lebih tebal biar jelas di ukuran kecil
-                fill="transparent"
-                className="text-red-900/50"
-              />
-              <circle
-                cx="64"
-                cy="64"
-                r="58"
-                stroke="currentColor"
-                strokeWidth="6"
-                fill="transparent"
-                strokeDasharray={2 * Math.PI * 58}
-                strokeDashoffset={(1 - getProgress(unit)) * 2 * Math.PI * 58}
-                className={`text-red-500 transition-all duration-500 ${activeUnit === unit ? 'filter drop-shadow-[0_0_8px_rgba(220,38,38,0.8)]' : ''}`}
-                strokeLinecap="round"
-              />
-            </svg>
-            
-            {/* Angka di tengah: Ukuran font disesuaikan (text-xl di mobile) */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <motion.span
-                key={timeLeft[unit]}
-                initial={{ scale: 1.5, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                className="text-xl md:text-4xl font-black text-red-500"
-              >
-                {timeLeft[unit] || 0}
-              </motion.span>
-              <span className="text-[8px] md:text-xs text-red-400/70 font-bold tracking-wider">
-                {labels[idx]}
-              </span>
-            </div>
+          {/* Perubahan: Ukuran font judul diperkecil di mobile */}
+          <h3 className="text-center text-red-400 font-bold tracking-wider mb-4 md:mb-6 text-xs md:text-sm">
+            COUNTDOWN MENUJU H-HARI
+          </h3>
+          
+          {/* Perubahan: Gap diperkecil di mobile (gap-3) */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
+            {["days", "hours", "minutes", "seconds"].map((unit, idx) => {
+              const labels = ["HARI", "JAM", "MENIT", "DETIK"];
+              return (
+                <motion.div
+                  key={unit}
+                  onHoverStart={() => setActiveUnit(unit)}
+                  onHoverEnd={() => setActiveUnit(null)}
+                  whileHover={{ scale: 1.05 }}
+                  className="relative flex flex-col items-center"
+                >
+                  {/* PERUBAHAN UTAMA: Ukuran Ring (w-20 di mobile, w-32 di desktop) */}
+                  <div className="relative w-20 h-20 md:w-32 md:h-32">
+                    <svg className="w-full h-full -rotate-90" viewBox="0 0 128 128">
+                      <circle
+                        cx="64"
+                        cy="64"
+                        r="58"
+                        stroke="currentColor"
+                        strokeWidth="6" // Sedikit lebih tebal biar jelas di ukuran kecil
+                        fill="transparent"
+                        className="text-red-900/50"
+                      />
+                      <circle
+                        cx="64"
+                        cy="64"
+                        r="58"
+                        stroke="currentColor"
+                        strokeWidth="6"
+                        fill="transparent"
+                        strokeDasharray={2 * Math.PI * 58}
+                        strokeDashoffset={(1 - getProgress(unit)) * 2 * Math.PI * 58}
+                        className={`text-red-500 transition-all duration-500 ${activeUnit === unit ? 'filter drop-shadow-[0_0_8px_rgba(220,38,38,0.8)]' : ''}`}
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                    
+                    {/* Angka di tengah: Ukuran font disesuaikan (text-xl di mobile) */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <motion.span
+                        key={timeLeft[unit]}
+                        initial={{ scale: 1.5, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        className="text-xl md:text-4xl font-black text-red-500"
+                      >
+                        {timeLeft[unit] || 0}
+                      </motion.span>
+                      <span className="text-[8px] md:text-xs text-red-400/70 font-bold tracking-wider">
+                        {labels[idx]}
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </motion.div>
-      );
-    })}
-  </div>
-</motion.div>
 
-        {/* Anggota Brigade (Preview) */}
+        {/* ===== Detail Tambahan & Rundown ===== */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="mb-10"
+          viewport={{ once: true }}
+          transition={{ delay: 0.6 }}
+          className="bg-black/40 backdrop-blur-sm border border-red-800/30 rounded-2xl p-6 md:p-8 mb-6"
         >
-          <p className="text-center text-red-400 text-sm font-bold tracking-wider mb-4">
-            ✦ YANG AKAN HADIR ✦
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            {anggotaBrigade.map((anggota, idx) => (
-              <motion.div
-                key={anggota.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.6 + (idx * 0.1) }}
-                whileHover={{ y: -5 }}
-                className="bg-red-950/30 border border-red-800/50 rounded-lg px-4 py-3 text-center min-w-[130px] hover:border-red-600 transition-all"
-              >
-                <p className="text-2xl mb-1">{anggota.ikon}</p>
-                <p className="font-bold text-sm">{anggota.nama}</p>
-                <p className="text-[10px] text-red-400/70">{anggota.peran}</p>
-              </motion.div>
-            ))}
+          {/* Header Section */}
+          <div className="text-center mb-8">
+            <h3 className="text-xl md:text-2xl font-bold text-red-400 mb-2">DETAIL INFORMASI</h3>
+            <div className="h-px w-24 bg-red-600/50 mx-auto"></div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+            {/* Kolom Kiri: Dresscode & Info */}
+            <div className="space-y-6">
+              <div className="bg-red-950/20 border border-red-900/50 rounded-xl p-5">
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="text-2xl">👔</span>
+                  <h4 className="font-bold text-red-300 tracking-wider">DRESSCODE</h4>
+                </div>
+                <p className="text-gray-300 pl-9 font-semibold">Putih & Biru</p>
+              </div>
+            </div>
+
+            {/* Kolom Kanan: Rundown Acara (Timeline Style) */}
+            <div>
+              <div className="flex items-center gap-3 mb-6">
+                <span className="text-2xl">📋</span>
+                <h4 className="font-bold text-red-300 tracking-wider">SUSUNAN ACARA</h4>
+              </div>
+              
+              <div className="space-y-4 relative before:absolute before:inset-0 before:ml-2 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-red-500/50 before:to-transparent">
+                
+                {[
+                  "Pembukaan",
+                  "Menyanyikan Lagu Indonesia Raya",
+                  "Pemutaran Video & Foto (Penugasan & Prestasi)",
+                  "Sambutan Ketua Panitia",
+                  "Sambutan Ketua Umum ADD",
+                  "Sambutan Danyon Pembina",
+                  "Pemotongan Tumpeng",
+                  "Pemberian Santunan",
+                  "Doa",
+                  "Ramah Tamah / Hiburan",
+                  "Penutup"
+                ].map((acara, index) => (
+                  <div key={index} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                    {/* Dot Indikator */}
+                    <div className="flex items-center justify-center w-5 h-5 rounded-full border border-red-500 bg-black absolute left-0 md:left-1/2 -translate-x-1/2 group-hover:bg-red-500 transition-colors shadow-[0_0_10px_rgba(220,38,38,0.5)]">
+                      <div className="w-1.5 h-1.5 bg-red-400 rounded-full group-hover:bg-white"></div>
+                    </div>
+
+                    {/* Teks Acara */}
+                    <div className="w-[calc(100%-2rem)] md:w-[calc(50%-2rem)] pl-4 md:pl-0 text-left md:odd:text-right group-hover:-translate-y-1 transition-transform">
+                      <p className="text-sm md:text-base font-medium text-gray-300 group-hover:text-white group-hover:font-semibold transition-colors">
+                        {acara}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+                
+              </div>
+            </div>
           </div>
         </motion.div>
 
-        {/* Action Buttons */}
+        {/* ===== Catatan Penting / Perhatian ===== */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.8 }}
+          className="relative bg-black/50 border-y-2 border-red-800/50 py-6 px-4 md:px-8 mb-10 overflow-hidden"
         >
-          <motion.a
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            href="https://maps.google.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative px-8 py-3 bg-gradient-to-r from-red-600 to-red-700 rounded-lg font-bold text-white overflow-hidden shadow-lg shadow-red-900/50"
-          >
-            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
-            <span className="relative flex items-center gap-2">
-              <span>📍</span> LIHAT LOKASI MARKAS
-            </span>
-          </motion.a>
-          
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-8 py-3 bg-transparent border-2 border-red-700 hover:bg-red-950/50 rounded-lg font-bold text-red-400 transition-all"
-          >
-            <span className="flex items-center gap-2">
-              <span>📋</span> KONFIRMASI KEHADIRAN
-            </span>
-          </motion.button>
+          {/* Efek garis hazard di background */}
+          <div className="absolute inset-0 opacity-5" style={{
+            backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 10px, #dc2626 10px, #dc2626 20px)`
+          }}></div>
+
+          <div className="relative z-10 max-w-3xl mx-auto">
+            <div className="flex items-center justify-center gap-3 mb-5">
+              <span className="text-red-500 text-xl">⚠️</span>
+              <h4 className="font-bold text-red-400 tracking-[0.2em] text-sm md:text-base">PERHATIAN KHUSUS</h4>
+              <span className="text-red-500 text-xl">⚠️</span>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center md:text-left">
+              <div className="bg-red-950/30 border border-red-900/30 p-4 rounded-lg hover:border-red-500/50 transition-colors">
+                <div className="text-2xl mb-2 text-center">⏱️</div>
+                <p className="text-xs md:text-sm text-gray-300 text-center">
+                  Hadir <strong className="text-white">30 menit</strong> sebelum acara dimulai untuk registrasi & pengkondisian.
+                </p>
+              </div>
+              
+              <div className="bg-red-950/30 border border-red-900/30 p-4 rounded-lg hover:border-red-500/50 transition-colors">
+                <div className="text-2xl mb-2 text-center">🪖</div>
+                <p className="text-xs md:text-sm text-gray-300 text-center">
+                  Wajib mengikuti seluruh rangkaian acara dengan <strong className="text-white">tertib dan disiplin</strong>.
+                </p>
+              </div>
+              
+              <div className="bg-red-950/30 border border-red-900/30 p-4 rounded-lg hover:border-red-500/50 transition-colors">
+                <div className="text-2xl mb-2 text-center">🛡️</div>
+                <p className="text-xs md:text-sm text-gray-300 text-center">
+                  Menjaga kebersihan dan mematuhi peraturan di area <strong className="text-white">Mako Brimob</strong>.
+                </p>
+              </div>
+            </div>
+          </div>
         </motion.div>
 
         {/* Motto di footer */}

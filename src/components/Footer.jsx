@@ -62,7 +62,7 @@ export default function Footer() {
 
       {/* Bottom Text */}
       <div className="mt-2 pt-6 mb-6 border-t border-white/10 text-center text-xs text-neutral-500">
-        © {new Date().getFullYear()} Anniversary Angkatan 2016. Built with ❤ link-invitasi.my.id
+        © {new Date().getFullYear()} Anniversary Angkatan 2016. Built with ❤ MW
       </div>
     </footer>
   );

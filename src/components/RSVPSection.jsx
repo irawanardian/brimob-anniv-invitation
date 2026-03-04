@@ -1,6 +1,8 @@
-
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+
+// Deklarasikan URL di luar komponen supaya bisa diakses oleh semua fungsi
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz3XNAuNvUYvWBL1ivrc_xrauF9CzrbaC4kNRQvm3vALh0m5_VTBxsjGv0Y3mL1XLkqHg/exec";
 
 export default function RSVPSection() {
   const [name, setName] = useState("");
@@ -12,23 +14,23 @@ export default function RSVPSection() {
   const [filter, setFilter] = useState("Semua");
   const [isFormVisible, setIsFormVisible] = useState(true);
   const [formStep, setFormStep] = useState(1);
+  const [isLoading, setIsLoading] = useState(true); // Tambahkan state loading
   
   const formRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Load dari localStorage saat pertama kali buka
-  // Load dari localStorage saat pertama kali buka
+  // Tarik data dari Google Sheets saat pertama buka web
   useEffect(() => {
-    const stored = localStorage.getItem("rsvpData");
-    if (stored) {
-      setGuests(JSON.parse(stored));
-    }
-    
-    // 👇 Hapus atau jadikan komentar bagian auto-focus ini 👇
-    // setTimeout(() => {
-    //   if (inputRef.current) inputRef.current.focus();
-    // }, 500);
-    
+    fetch(SCRIPT_URL)
+      .then(res => res.json())
+      .then(data => {
+        setGuests(data);
+        setIsLoading(false);
+      })
+      .catch(err => {
+        console.error("Gagal tarik data:", err);
+        setIsLoading(false);
+      });
   }, []);
 
   // Hitung statistik
@@ -36,10 +38,11 @@ export default function RSVPSection() {
   const totalTidakHadir = guests.filter(g => g.attendance === "Tidak Hadir").length;
   const totalKomentar = guests.filter(g => g.comment).length;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name.trim()) return;
 
+    // 1. Tampilkan langsung di layar biar kerasa responsif (Optimistic UI)
     const newGuest = { 
       name, 
       attendance, 
@@ -47,25 +50,39 @@ export default function RSVPSection() {
       timestamp: new Date().toISOString(),
       id: Date.now()
     };
+    setGuests([newGuest, ...guests]);
 
-    const updatedGuests = [newGuest, ...guests];
-    setGuests(updatedGuests);
-    localStorage.setItem("rsvpData", JSON.stringify(updatedGuests));
+    // 2. Siapkan data untuk dikirim ke Google Sheets
+    const formData = new FormData();
+    formData.append("nama", name);
+    formData.append("kehadiran", attendance);
+    formData.append("komentar", comment);
 
-    // Reset form
+    // 3. Reset form dan munculkan notif sukses ke user
     setName("");
     setAttendance("Hadir");
     setComment("");
     setFormStep(1);
     setSubmitted(true);
 
-    // Animasi sukses
+    // Animasi sukses hilang setelah 3 detik
     setTimeout(() => setSubmitted(false), 3000);
     
-    // Scroll ke list terbaru
+    // Scroll ke daftar terbaru
     setTimeout(() => {
       document.getElementById('guest-list')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }, 100);
+
+    // 4. Proses kirim ke Google Sheets di background
+    try {
+      await fetch(SCRIPT_URL, { method: "POST", body: formData });
+      // Setelah sukses kirim, tarik data terbaru lagi biar sinkron
+      const res = await fetch(SCRIPT_URL);
+      const data = await res.json();
+      setGuests(data);
+    } catch (error) {
+      console.error("Gagal kirim ke Sheets:", error);
+    }
   };
 
   // Filter guests
@@ -129,7 +146,7 @@ export default function RSVPSection() {
           
           <div className="flex items-center justify-center gap-4 text-red-400 text-sm">
             <div className="h-px w-12 bg-red-500/50"></div>
-            <p>SATUAN BRIGADE</p>
+            <p>SATUAN BRIGADDE</p>
             <div className="h-px w-12 bg-red-500/50"></div>
           </div>
 
@@ -156,6 +173,22 @@ export default function RSVPSection() {
               <p className="text-2xl font-black text-yellow-500">{totalKomentar}</p>
               <p className="text-xs text-gray-400">Komentar</p>
             </motion.div>
+          </div>
+        </motion.div>
+
+        {/* ===== ALERT BATAS WAKTU ===== */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="mb-8 bg-red-900/20 border-l-4 border-red-500 p-4 rounded-r-lg flex items-start md:items-center gap-4 backdrop-blur-sm"
+        >
+          <div className="text-2xl md:text-3xl animate-pulse">⏳</div>
+          <div>
+            <h4 className="font-bold text-red-400 text-sm md:text-base tracking-wider">BATAS AKHIR KONFIRMASI</h4>
+            <p className="text-gray-300 text-xs md:text-sm mt-1 leading-relaxed">
+              Mohon kesediaannya untuk mengisi formulir ini maksimal pada <strong className="text-white">Senin, 13 April 2026</strong> untuk keperluan pendataan logistik dan kapasitas kursi.
+            </p>
           </div>
         </motion.div>
 
@@ -344,6 +377,34 @@ export default function RSVPSection() {
           </div>
         </motion.div>
 
+        {/* ===== HUBUNGI PANITIA ===== */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mb-12 flex flex-col md:flex-row items-center justify-between bg-red-950/20 border border-red-800/50 rounded-2xl p-6 backdrop-blur-sm"
+        >
+          <div className="text-center md:text-left mb-4 md:mb-0">
+            <h4 className="font-bold text-red-400 tracking-wider mb-1">BUTUH BANTUAN?</h4>
+            <p className="text-sm text-gray-400">
+              Ada kendala pengisian atau pertanyaan seputar acara? Hubungi panitia kami.
+            </p>
+          </div>
+          
+          <motion.a
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            // Nomor diubah formatnya ke 628... agar link WA langsung berfungsi
+            href="https://wa.me/6282292040027?text=Halo%20Panitia%20Anniversary%20Angkatan%20Dua%20Dua,%20saya%20ingin%20bertanya%20seputar%20acara..."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 px-6 py-3 bg-green-900/30 border border-green-600 hover:bg-green-600 hover:border-green-400 text-green-400 hover:text-white rounded-lg transition-all font-semibold shadow-[0_0_15px_rgba(22,163,74,0.2)] hover:shadow-[0_0_25px_rgba(22,163,74,0.5)]"
+          >
+            <span className="text-2xl">💬</span>
+            <span className="tracking-wide">WhatsApp Panitia</span>
+          </motion.a>
+        </motion.div>
+
         {/* FILTER & LIST TAMU */}
         <motion.div
           id="guest-list"
@@ -377,9 +438,19 @@ export default function RSVPSection() {
             </div>
           </div>
 
-          {/* List Tamu */}
+          {/* List Tamu dengan Loading State */}
           <AnimatePresence mode="popLayout">
-            {filteredGuests.length > 0 ? (
+            {isLoading ? (
+              <motion.div 
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: 1 }} 
+                exit={{ opacity: 0 }}
+                className="text-center py-12 text-red-400"
+              >
+                <div className="text-3xl animate-spin mb-3">⏳</div>
+                <p className="text-sm tracking-widest font-bold">MEMUAT DATA...</p>
+              </motion.div>
+            ) : filteredGuests.length > 0 ? (
               <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
                 {filteredGuests.map((guest, index) => (
                   <motion.div
@@ -451,27 +522,16 @@ export default function RSVPSection() {
           transition={{ delay: 0.6 }}
           className="text-center text-red-700/50 text-xs mt-8 tracking-widest"
         >
-          SATUAN BRIGADE • SIAGA • CEPAT • TANGGUH
+          SATUAN BRIGADDE • SIAGA • CEPAT • TANGGUH
         </motion.p>
       </div>
 
-      {/* Di dalam return, letakkan di bagian paling bawah, setelah elemen terakhir */}
-<style>{`
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: rgba(220, 38, 38, 0.1);
-    border-radius: 10px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(220, 38, 38, 0.5);
-    border-radius: 10px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgba(220, 38, 38, 0.8);
-  }
-`}</style>
+      <style>{`
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(220, 38, 38, 0.1); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(220, 38, 38, 0.5); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(220, 38, 38, 0.8); }
+      `}</style>
     </section>
   );
 }

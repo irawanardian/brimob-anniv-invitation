@@ -15,7 +15,7 @@ export default function ClosingSection() {
   
   const mottoPhrases = [
     "Tumbuh Bersama",
-    "Kuat Bersama"
+    "Kuat Selamanya",
   ];
 
   // Efek typing untuk motto
@@ -41,13 +41,6 @@ export default function ClosingSection() {
     }
   }, [isInView, currentPhrase]);
 
-  // Data untuk penghormatan
-  const penghormatan = [
-    { ikon: "👨‍✈️", nama: "Komandan Satuan", pesan: "Terima kasih atas dedikasi" },
-    { ikon: "🚒", nama: "Tim Rescue", pesan: "Siaga 24 jam" },
-    { ikon: "🏥", nama: "Tim Medis", pesan: "Cepat tanggap" },
-    { ikon: "📦", nama: "Tim Logistik", pesan: "Dukungan terbaik" },
-  ];
 
   return (
 <section 
@@ -145,7 +138,7 @@ export default function ClosingSection() {
           
           <div className="flex items-center justify-center gap-4 text-red-400">
             <div className="h-px w-16 bg-red-500/50"></div>
-            <p className="text-sm font-semibold tracking-wider">SATUAN BRIGADE</p>
+            <p className="text-sm font-semibold tracking-wider">SATUAN BRIGADDE</p>
             <div className="h-px w-16 bg-red-500/50"></div>
           </div>
         </motion.div>
@@ -198,32 +191,27 @@ export default function ClosingSection() {
           </div>
         </motion.div>
 
-        {/* Grid Penghormatan */}
+        {/* ===== Doa & Harapan ===== */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.8 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12"
+          transition={{ delay: 1.1, duration: 0.8 }}
+          className="w-full max-w-2xl mx-auto mb-12 relative"
         >
-          {penghormatan.map((item, idx) => (
-            <motion.div
-              key={idx}
-              whileHover={{ scale: 1.05, y: -5 }}
-              onHoverStart={() => setShowSalute(true)}
-              onHoverEnd={() => setShowSalute(false)}
-              className="bg-gradient-to-b from-red-950/30 to-black/50 backdrop-blur-sm border border-red-800/50 rounded-xl p-4 text-center group cursor-pointer"
-            >
-              <motion.div
-                animate={showSalute ? { rotate: [0, -10, 10, -10, 0] } : {}}
-                transition={{ duration: 0.5 }}
-                className="text-3xl mb-2"
-              >
-                {item.ikon}
-              </motion.div>
-              <p className="font-bold text-sm text-red-400">{item.nama}</p>
-              <p className="text-xs text-gray-500 mt-1">{item.pesan}</p>
-            </motion.div>
-          ))}
+          {/* Aksen sudut kotak */}
+          <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-red-500"></div>
+          <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-red-500"></div>
+          <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-red-500"></div>
+          <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-red-500"></div>
+          
+          <div className="bg-red-950/20 backdrop-blur-sm p-6 md:p-8 text-center border border-red-900/30">
+            <span className="text-3xl mb-4 inline-block opacity-80">🤲</span>
+            <p className="text-gray-300 text-sm md:text-base leading-relaxed italic">
+              "Semoga Allah SWT senantiasa memberikan perlindungan, kesehatan, dan kelancaran 
+              dalam setiap langkah pengabdian kita. Tetap solid, jaga kekompakan, dan 
+              selalu kembali pulang dengan selamat demi keluarga di rumah."
+            </p>
+          </div>
         </motion.div>
 
         {/* Penghormatan Terakhir (Baris Hormat) */}
@@ -273,38 +261,7 @@ export default function ClosingSection() {
           </div>
         </motion.div>
 
-        {/* Navigation Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 1.6 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center mt-12"
-        >
-          <motion.a
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            href="#top"
-            className="group relative px-8 py-3 bg-red-600 hover:bg-red-500 rounded-lg font-semibold overflow-hidden"
-          >
-            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
-            <span className="relative flex items-center gap-2">
-              <span>⬆️</span>
-              KEMBALI KE ATAS
-            </span>
-          </motion.a>
-          
-          <motion.a
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            href="#rsvp"
-            className="px-8 py-3 bg-transparent border-2 border-red-700 hover:bg-red-950/50 rounded-lg font-semibold text-red-400 transition-all"
-          >
-            <span className="flex items-center gap-2">
-              <span>📋</span>
-              LIHAT KONFIRMASI
-            </span>
-          </motion.a>
-        </motion.div>
+        
       </div>
 
       {/* Efek tambahan saat hover tombol hormat */}
