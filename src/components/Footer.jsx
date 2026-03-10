@@ -1,69 +1,53 @@
-
-// src/components/Footer.jsx
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 export default function Footer() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
+
   return (
     <footer className="relative bg-black text-white border-t border-white/10 mt-20 overflow-hidden">
-
-      {/* Floating stars/badges */}
-      <div className="absolute inset-0 pointer-events-none">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            initial={{ y: -50, opacity: 0 }}
-            animate={{ y: 400, opacity: 1 }}
-            transition={{
-              duration: 6 + Math.random() * 4,
-              delay: Math.random() * 3,
-              repeat: Infinity,
-              repeatType: "loop",
-            }}
-            className="absolute w-2 h-2 bg-red-500 rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Content */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
-        className="relative max-w-6xl mx-auto px-6 py-12 flex flex-col md:flex-row items-center justify-between gap-6"
-      >
-        {/* Left Text */}
-        <div className="text-center md:text-left">
-          <h3 className="text-lg font-bold tracking-wide text-red-500 hover:scale-105 transition-transform">
-            Anniversary Angkatan Dua-dua
-          </h3>
-          <p className="text-sm text-neutral-400 mt-2 hover:text-white transition-colors">
-            Merayakan kebersamaan, mengenang perjalanan, dan menyatukan kembali cerita.
-          </p>
-          <p className="mt-2 text-xs italic text-neutral-500">
-            "Tumbuh Bersama, Kuat Selamanya"
-          </p>
-        </div>
-
-        {/* Right badge/quote */}
-        <div className="flex gap-4 mt-6 md:mt-0 justify-center md:justify-end">
-          {[...Array(3)].map((_, i) => (
+      {/* Hanya ngerender partikel kalau BUKAN mobile */}
+      {!isMobile && (
+        <div className="absolute inset-0 pointer-events-none">
+          {[...Array(15)].map((_, i) => (
             <motion.div
               key={i}
-              whileHover={{ scale: 1.3, rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 0.5 }}
-              className="w-6 h-6 md:w-8 md:h-8 border-2 border-red-500 rounded-full"
+              initial={{ y: -50, opacity: 0 }}
+              animate={{ y: 400, opacity: 0.5 }}
+              transition={{
+                duration: 6 + Math.random() * 4,
+                repeat: Infinity,
+                repeatType: "loop",
+              }}
+              className="absolute w-1 h-1 bg-red-500/50 rounded-full"
+              style={{ left: `${Math.random() * 100}%` }}
             />
           ))}
         </div>
-      </motion.div>
+      )}
 
-      {/* Bottom Text */}
-      <div className="mt-2 pt-6 mb-6 border-t border-white/10 text-center text-xs text-neutral-500">
-        © {new Date().getFullYear()} Anniversary Angkatan 2016. Built with ❤ MW
-      </div>
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        className="relative max-w-6xl mx-auto px-6 py-12 flex flex-col md:flex-row items-center justify-between gap-6"
+      >
+        <div className="text-center md:text-left">
+          <h3 className="text-lg font-bold tracking-wide text-red-500">
+            Anniversary Angkatan Dua-dua
+          </h3>
+          <p className="text-sm text-neutral-400 mt-2">
+            "Tumbuh Bersama, Kuat Selamanya"
+          </p>
+        </div>
+        
+        <div className="text-xs text-neutral-600">
+          © 2026 BRIGADDE 22. All Rights Reserved.
+        </div>
+      </motion.div>
     </footer>
   );
 }
