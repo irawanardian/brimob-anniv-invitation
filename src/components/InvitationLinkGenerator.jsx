@@ -34,7 +34,7 @@ Sebuah kehormatan bagi kami dapat kembali bersilaturahmi dalam acara yang akan d
 
 🗓 *Sabtu, 18 April 2026*
 🕘 *09.00 WIB – Selesai*
-📍 *(Isi Lokasi di Sini)*
+📍 *Aula Soemarto, Mako Brimob Kelapa Dua Depok - https://maps.app.goo.gl/ZBG7T7URiqZ6Me9N6*
 
 Detail acara dan konfirmasi kehadiran dapat diakses melalui tautan berikut:
 ${link}
