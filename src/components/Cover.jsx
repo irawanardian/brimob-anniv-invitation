@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import Logo3D from "./Logo3D";
 
-export default function Cover({ onOpen }) {
+export default function Cover({ onOpen, guestName = "Tamu Kehormatan" }) {
   const eventDate = new Date("April 18, 2026 09:00:00").getTime();
 
   function getTimeRemaining() {
@@ -154,37 +154,36 @@ export default function Cover({ onOpen }) {
 
       {/* MAIN CONTENT */}
       <div className="relative z-20 flex flex-col items-center justify-center h-full w-full gap-4 md:gap-8">
-     
         {/* LOGO */}
-<div
-  className="flex-none h-[10vh] md:h-[12vh] flex items-center justify-center mb-4 md:mb-6 mt-6 md:mt-8"
-  onMouseEnter={() => !isMobile && setIsHovered(true)}
-  onMouseLeave={() => !isMobile && setIsHovered(false)}
->
-  <motion.div
-  animate={
-  liteMode
-    ? {
-        y: [0, -10, 0],
-        scale: [1, 1.015, 1],
-      }
-    : {
-        y: [0, -14, 0],
-        scale: [1, 1.02, 1],
-      }
-}
-transition={{
-  duration: liteMode ? 3.4 : 3.8,
-  repeat: Infinity,
-  ease: "easeInOut",
-}}
-  className={`w-[220px] sm:w-[260px] md:w-[340px] lg:w-[420px] xl:w-[500px] transition-transform duration-500 ${
-    isHovered ? "md:scale-[1.04]" : "scale-100"
-  }`}
->
-  <Logo3D />
-</motion.div>
-</div>
+        <div
+          className="flex-none h-[10vh] md:h-[12vh] flex items-center justify-center mb-4 md:mb-6 mt-6 md:mt-8"
+          onMouseEnter={() => !isMobile && setIsHovered(true)}
+          onMouseLeave={() => !isMobile && setIsHovered(false)}
+        >
+          <motion.div
+            animate={
+              liteMode
+                ? {
+                    y: [0, -10, 0],
+                    scale: [1, 1.015, 1],
+                  }
+                : {
+                    y: [0, -14, 0],
+                    scale: [1, 1.02, 1],
+                  }
+            }
+            transition={{
+              duration: liteMode ? 3.4 : 3.8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className={`w-[220px] sm:w-[260px] md:w-[340px] lg:w-[420px] xl:w-[500px] transition-transform duration-500 ${
+              isHovered ? "md:scale-[1.04]" : "scale-100"
+            }`}
+          >
+            <Logo3D />
+          </motion.div>
+        </div>
 
         {/* TEXT */}
         <div className="flex flex-col items-center w-full max-w-2xl text-center mt-2 md:mt-0 space-y-4">
@@ -260,7 +259,7 @@ transition={{
               KEPADA YTH.
             </p>
             <h2 className="text-base md:text-xl font-bold uppercase tracking-widest text-white relative inline-block">
-              Tamu Kehormatan
+              {guestName}
               {!liteMode && (
                 <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-red-500 to-transparent animate-pulse" />
               )}

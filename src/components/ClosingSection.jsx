@@ -170,7 +170,7 @@ export default function ClosingSection() {
             initial={{ opacity: 0, y: 16 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.3, duration: 0.6 }}
-            className="text-4xl md:text-5xl font-black mb-4"
+            className="text-3xl md:text-5xl font-black mb-4"
           >
             <span className="bg-gradient-to-r from-red-500 via-red-400 to-red-500 bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(239,68,68,0.12)]">
               PENGHORMATAN AKHIR
