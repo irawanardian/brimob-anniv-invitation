@@ -15,7 +15,8 @@ const Footer = lazy(() => import("./components/Footer"));
 function App() {
 
   // detect halaman
-  const isGeneratorPage = window.location.pathname === "/generator";
+  const path = window.location.pathname.replace(/\/+$/, "") || "/";
+  const isGeneratorPage = path === "/generator";
 
   const [isOpen, setIsOpen] = useState(false);
   const [showAnniversary, setShowAnniversary] = useState(false);
